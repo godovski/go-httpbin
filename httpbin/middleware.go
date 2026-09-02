@@ -120,6 +120,7 @@ func observe(o Observer, h http.Handler) http.Handler {
 		o(r.Context(), Result{
 			Status:      mw.Status(),
 			Method:      r.Method,
+			ReqHeaders:  r.Header,
 			URI:         r.URL.RequestURI(),
 			Route:       r.Pattern,
 			Size:        mw.Size(),
@@ -134,12 +135,13 @@ func observe(o Observer, h http.Handler) http.Handler {
 // Result records the details of an incoming request and the resulting
 // response, for instrumentation via an [Observer].
 type Result struct {
-	Status    int
-	Method    string
-	URI       string
-	Duration  time.Duration
-	UserAgent string
-	ClientIP  string
+	Status     int
+	Method     string
+	ReqHeaders http.Header
+	URI        string
+	Duration   time.Duration
+	UserAgent  string
+	ClientIP   string
 
 	// Response size in bytes written. TODO: consider rename to ResponseSize
 	// for clarity/consistency with RequestSize.
